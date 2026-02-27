@@ -6,6 +6,10 @@ from backend.core.config import settings
 _database_url = settings.DATABASE_URL
 if _database_url.startswith("postgresql://"):
     _database_url = _database_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+if "?sslmode=" in _database_url:
+    _database_url = _database_url.split("?sslmode=")[0]
+elif "?ssl=" in _database_url:
+    _database_url = _database_url.split("?ssl=")[0]
 
 engine = create_async_engine(
     _database_url,
